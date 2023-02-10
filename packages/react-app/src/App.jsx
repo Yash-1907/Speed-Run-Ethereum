@@ -50,7 +50,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.goerli; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -561,6 +561,17 @@ function App(props) {
                 }}
               >
                 🥩 Stake 0.5 ether!
+              </Button>
+            </div>
+
+            <div style={{ padding: 8 }}>
+              <Button
+                type={balanceStaked ? "success" : "primary"}
+                onClick={() => {
+                  tx(writeContracts.Staker.withdrawStake());
+                }}
+              >
+                Withdraw Staked!!
               </Button>
             </div>
 
