@@ -52,7 +52,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.goerli; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -476,6 +476,16 @@ function App(props) {
        *  `clientAddress`. (If it wasn't, log some error message and return).
       */
 
+      const packed = ethers.utils.solidityPack(["uint256"], [updatedBalance]);
+      const hashed = ethers.utils.keccak256(packed);
+      const arrayified = ethers.utils.arrayify(hashed);
+
+      const signer = ethers.utils.verifyMessage(arrayified, voucher.data.signature);
+      if(signer != clientAddress){
+        console.log("signer not client");
+        return;
+      }
+
       const existingVoucher = vouchers()[clientAddress];
 
       // update our stored voucher if this new one is more valuable
@@ -800,7 +810,7 @@ function App(props) {
                         </div>
                       </Card>
 
-                      {/* Checkpoint 5:
+                      {/* Checkpoint 5: */}
                       <Button
                         style={{ margin: 5 }}
                         type="primary"
@@ -811,7 +821,7 @@ function App(props) {
                         }}
                       >
                         Cash out latest voucher
-                      </Button> */}
+                      </Button>
                     </List.Item>
                   )}
                 ></List>
@@ -853,7 +863,7 @@ function App(props) {
                         </Card>
                       </Col>
 
-                      {/* Checkpoint 6: challenge & closure
+                      {/* Checkpoint 6: challenge & closure */}
 
                       <Col span={5}>
                         <Button
@@ -887,7 +897,7 @@ function App(props) {
                         >
                           Close and withdraw funds
                         </Button>
-                      </Col> */}
+                      </Col>
                     </Row>
                   </div>
                 ) : hasClosedChannel() ? (
